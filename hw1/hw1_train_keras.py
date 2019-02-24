@@ -67,18 +67,18 @@ repeat = 500
 
 # Train model
 model = Sequential()
-model.add(Dense(12, input_dim = len(x[0]), kernel_initializer='normal', activation = 'relu'))
-model.add(Dense(8, activation = 'relu'))
+model.add(Dense(50, input_dim = len(x[0]), kernel_initializer='normal', activation = 'relu'))
+model.add(Dense(30, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
 model.summary()
-model.compile(loss = 'mse', optimizer = 'adam')
+model.compile(loss = 'mse', optimizer = 'adam', metrics = ['mse','mae'])
 
 '''for i in range(repeat):
     cost = model.train_on_batch(x, y)
     if i % 50 == 0:
         print('iteration: %d | Cost: %.6lf' % (i, cost))
 '''
-model.fit(x, y, batch_size = 50, epochs = 100, verbose = 1, validation_split = 0.2)
+model.fit(x, y, batch_size = 50, epochs = 250, verbose = 1, validation_split = 0.2)
 model.save('model.h5')
 del model
 
