@@ -4,6 +4,7 @@ import math
 import csv
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.layers import Dropout
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -67,18 +68,26 @@ repeat = 500
 
 # Train model
 model = Sequential()
-model.add(Dense(50, input_dim = len(x[0]), kernel_initializer='normal', activation = 'relu'))
-model.add(Dense(30, activation = 'relu'))
+'''
+model.add(Dense(12, input_dim = len(x[0]), kernel_initializer='normal', activation = 'relu'))
+model.add(Dense(8, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
+'''
+model.add(Dropout(0.2, input_shape = (len(x[0]), )))
+model.add(Dense(30, kernel_initializer='normal', activation = 'relu'))
+model.add(Dense(20, activation = 'relu'))
+model.add(Dense(1, activation = 'linear'))
+
+
 model.summary()
-model.compile(loss = 'mse', optimizer = 'adam', metrics = ['mse','mae'])
+model.compile(loss = 'mse', optimizer = 'adam')
 
 '''for i in range(repeat):
     cost = model.train_on_batch(x, y)
     if i % 50 == 0:
         print('iteration: %d | Cost: %.6lf' % (i, cost))
 '''
-model.fit(x, y, batch_size = 50, epochs = 250, verbose = 1, validation_split = 0.2)
+model.fit(x, y, batch_size = 50, epochs = 100)
 model.save('model.h5')
 del model
 
