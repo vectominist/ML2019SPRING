@@ -55,7 +55,7 @@ model = load_model('model.h5')
 
 # Calculate predicted answer
 ans = []
-print(len(test_x[0]))
+# print(len(test_x[0]))
 y_ans = model.predict(test_x)
 for i in range(len(test_x)):
     ans.append(['id_' + str(i)])

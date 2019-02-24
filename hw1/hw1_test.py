@@ -32,6 +32,8 @@ for r in rows:
     else :
         for i in range(2, 11):
             if r[i] != 'NR':
+                if float(r[i]) < 0:
+                    r[i] = '0'
                 test_x[n_row // p].append(ABS(float(r[i])))
             else:
                 test_x[n_row // p].append(float(0))

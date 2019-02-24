@@ -29,6 +29,8 @@ for r in rows:
     if n_row != 0:
         for i in range(3, 27):
             if r[i] != 'NR':
+                if float(r[i]) < 0:
+                    r[i] = '0'
                 data[(n_row - 1) % p].append(float(r[i]))
             else:
                 data[(n_row - 1) % p].append(float(0))
@@ -58,12 +60,12 @@ x = np.concatenate((np.ones((x.shape[0], 1)), x), axis=1)
 # Weight and some parameters
 w = np.zeros(len(x[0]))
 lr = 0.0005
-repeat = 10000
+repeat = 25000
 beta_1 = 0.5
 beta_2 = 0.5
 beta_1t = 0.1
 beta_2t = 0.1
-
+lmd = 0.1
 
 # Start Training
 x_t = x.transpose()
@@ -79,16 +81,17 @@ for i in range(repeat):
     cost = np.sum(loss ** 2) / len(x)
     cost_a = math.sqrt(cost)
 
-    gra = np.dot(x_t, loss)
+    gra = np.dot(x_t, loss) + 2 * lmd * w # regularization with lambda
     # s_gra += gra ** 2
     m = beta_1 * m + (1.0 - beta_1) * gra
     v = beta_2 * v + (1.0 - beta_2) * (gra ** 2)
     mt = m / (1.0 - beta_1t)
     vt = v / (1.0 - beta_2t)
+
     w = w - lr * mt / np.sqrt(vt)
-    print('iteration: %d | Cost: %.6lf' % (i, cost_a))
+    if i % 200 == 0:
+        print('iteration: %d | Cost: %.6lf' % (i, cost_a))
 
 
 # Save model
 np.save('model.npy', w)
-
