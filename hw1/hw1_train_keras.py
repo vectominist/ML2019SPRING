@@ -63,8 +63,6 @@ y = np.array(y)
 x = np.concatenate((np.ones((x.shape[0], 1)), x), axis=1)
 
 
-# Some parameters
-repeat = 500
 
 # Train model
 model = Sequential()
@@ -74,20 +72,15 @@ model.add(Dense(8, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
 '''
 model.add(Dropout(0.2, input_shape = (len(x[0]), )))
-model.add(Dense(30, kernel_initializer='normal', activation = 'relu'))
+model.add(Dense(90, activation = 'relu'))
+model.add(Dense(50, activation = 'relu'))
 model.add(Dense(20, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
-
 
 model.summary()
 model.compile(loss = 'mse', optimizer = 'adam')
 
-'''for i in range(repeat):
-    cost = model.train_on_batch(x, y)
-    if i % 50 == 0:
-        print('iteration: %d | Cost: %.6lf' % (i, cost))
-'''
-model.fit(x, y, batch_size = 50, epochs = 100)
+model.fit(x, y, batch_size = 50, epochs = 500)
 model.save('model.h5')
 del model
 

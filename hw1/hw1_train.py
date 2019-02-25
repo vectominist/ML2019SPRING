@@ -63,17 +63,18 @@ lr = 0.0005
 repeat = 25000
 beta_1 = 0.5
 beta_2 = 0.5
-beta_1t = 0.1
-beta_2t = 0.1
-lmd = 0.1
+beta_1t = beta_1
+beta_2t = beta_2
+lmd = 1000
 
 # Start Training
-x_t = x.transpose()
+x_T = x.transpose()
 s_gra = np.zeros(len(x[0]))
 m = np.zeros(len(x[0]))
 v = np.zeros(len(x[0]))
-eps_a = [1e-8] * len(x[0])
+eps_a = [1e-3] * len(x[0])
 eps = np.array(eps_a)
+
 
 for i in range(repeat):
     hypo = np.dot(x, w)
@@ -81,17 +82,72 @@ for i in range(repeat):
     cost = np.sum(loss ** 2) / len(x)
     cost_a = math.sqrt(cost)
 
-    gra = np.dot(x_t, loss) + 2 * lmd * w # regularization with lambda
+    gra = np.dot(x_T, loss) + 2 * lmd * w # regularization with lambda
     # s_gra += gra ** 2
     m = beta_1 * m + (1.0 - beta_1) * gra
     v = beta_2 * v + (1.0 - beta_2) * (gra ** 2)
     mt = m / (1.0 - beta_1t)
     vt = v / (1.0 - beta_2t)
+    beta_1t *= beta_1
+    beta_2t *= beta_2
+
+    w = w - lr * mt / (np.sqrt(vt) + eps)
+    if i % 200 == 0:
+        print('iteration: %d | Cost: %.6lf' % (i, cost_a))
+
+'''
+# Stochastic Gradient Descent
+repeat = 100
+for i in range(repeat):
+    for j in range(len(x)):
+        hypo = np.dot(x[j], w)
+        loss = hypo - y[j]
+        cost = np.sum(loss ** 2) / len(x)
+        cost_a = math.sqrt(cost)
+
+        x_t = x[j].transpose()
+        gra = np.dot(x_t, loss) + 2 * lmd * w # regularization with lambda
+        # s_gra += gra ** 2
+        m = beta_1 * m + (1.0 - beta_1) * gra
+        v = beta_2 * v + (1.0 - beta_2) * (gra ** 2)
+        mt = m / (1.0 - beta_1t)
+        vt = v / (1.0 - beta_2t)
+        beta_1t /= 1.01
+        beta_2t /= 1.01
+
+        w = w - lr * mt / (np.sqrt(vt) + eps)
+        if (i * len(x) + j) % 200 == 0:
+            print('iteration: %d | Cost: %.6lf' % (i * len(x) + j, cost_a))
+    hypo = np.dot(x, w)
+    loss = hypo - y
+    cost = np.sum(loss ** 2) / len(x)
+    cost_a = math.sqrt(cost)
+    print('iteration: %d | Cost: %.6lf' % (i, cost_a))
+
+repeat = 5000
+for i in range(repeat):
+    hypo = np.dot(x, w)
+    loss = hypo - y
+    cost = np.sum(loss ** 2) / len(x)
+    cost_a = math.sqrt(cost)
+
+    gra = np.dot(x_T, loss) + 2 * lmd * w # regularization with lambda
+    # s_gra += gra ** 2
+    m = beta_1 * m + (1.0 - beta_1) * gra
+    v = beta_2 * v + (1.0 - beta_2) * (gra ** 2)
+    mt = m / (1.0 - beta_1t)
+    vt = v / (1.0 - beta_2t)
+    beta_1t /= 1.01
+    beta_2t /= 1.01
 
     w = w - lr * mt / np.sqrt(vt)
     if i % 200 == 0:
         print('iteration: %d | Cost: %.6lf' % (i, cost_a))
+'''
 
 
 # Save model
 np.save('model.npy', w)
+
+print('w avg = %.6lf' % ((np.sum(w ** 2)) / len(w)))
+
