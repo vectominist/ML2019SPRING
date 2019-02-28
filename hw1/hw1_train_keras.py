@@ -59,8 +59,11 @@ for i in range(12): # 12 months
 x = np.array(x)
 y = np.array(y)
 
+# add square term
+x = np.concatenate((x,x**2), axis = 1)
+
 # Add bias
-x = np.concatenate((np.ones((x.shape[0], 1)), x), axis=1)
+x = np.concatenate((np.ones((x.shape[0], 1)), x), axis = 1)
 
 
 
@@ -71,16 +74,17 @@ model.add(Dense(12, input_dim = len(x[0]), kernel_initializer='normal', activati
 model.add(Dense(8, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
 '''
-model.add(Dropout(0.2, input_shape = (len(x[0]), )))
-model.add(Dense(90, activation = 'relu'))
-model.add(Dense(50, activation = 'relu'))
-model.add(Dense(20, activation = 'relu'))
+
+model.add(Dropout(0.15, input_shape = (len(x[0]), )))
+# model.add(Dense(18, input_dim = len(x[0]), activation = 'relu'))
+model.add(Dense(18, activation = 'relu'))
+model.add(Dense(9, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
 
 model.summary()
 model.compile(loss = 'mse', optimizer = 'adam')
 
-model.fit(x, y, batch_size = 50, epochs = 500)
+model.fit(x, y, batch_size = 100, epochs = 800)
 model.save('model.h5')
 del model
 

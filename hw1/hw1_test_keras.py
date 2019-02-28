@@ -46,6 +46,22 @@ for r in rows:
 text.close()
 test_x = np.array(test_x)
 
+# Modify a little bit of testing data
+eps = 1e-5
+for d in range(len(test_x)):
+    for i in range(p):
+        test_mean = np.mean(test_x[d][i * 9:i * 9 + 9])
+        test_std = np.std(test_x[d][i * 9: i * 9 + 9])
+        if test_std < eps:
+            continue
+        for j in range(i * 9, i * 9 + 9):
+            if ABS((test_x[d][j] - test_mean) / (test_std + eps)) > 2.4:
+                test_x[d][j] = math.floor(test_mean * 100) / 100
+
+
+# add square term
+x = np.concatenate((x,x**2), axis=1)
+
 # Add bias
 test_x = np.concatenate((np.ones((test_x.shape[0], 1)), test_x), axis=1)
 
