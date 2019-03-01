@@ -65,11 +65,11 @@ x = np.concatenate((np.ones((x.shape[0], 1)), x), axis = 1)
 # Weight and some parameters
 w = np.zeros(len(x[0]))
 # w = np.array([0.001] * len(x[0]))
-lr = 0.0005
+lr = 0.00035
 lr_ada = 20
-repeat = 25000
-beta_1 = 0.5
-beta_2 = 0.5
+repeat = 60000
+beta_1 = 0.271
+beta_2 = 0.25
 beta_1t = 0.99
 beta_2t = 0.99
 lmd = 10
@@ -105,7 +105,7 @@ for i in range(repeat):
     if i % 200 == 0:
         print('iteration: %d | Cost: %.6lf' % (i, cost_a))
     
-    if cost_a < 5.40:
+    if cost_a < 5.381:
         print('ended at iteration: %d | Cost: %.6lf' % (i, cost_a))
         break
 
@@ -142,6 +142,12 @@ for i in range(repeat):
     print('iteration: %d | Cost: %.6lf' % (i, cost_a))
 '''
 
+# Final cost
+hypo = np.dot(x, w)
+loss = hypo - y
+cost = np.sum(loss ** 2) / len(x)
+cost_a = math.sqrt(cost)
+print('Final Cost: %.6lf' % (cost_a))
 
 # Save model
 np.save('model.npy', w)
