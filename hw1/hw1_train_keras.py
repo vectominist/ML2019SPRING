@@ -5,6 +5,8 @@ import csv
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
+from keras.callbacks import EarlyStopping
+from keras import regularizers
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -60,7 +62,7 @@ x = np.array(x)
 y = np.array(y)
 
 # add square term
-x = np.concatenate((x,x**2), axis = 1)
+# x = np.concatenate((x,x**2), axis = 1)
 
 # Add bias
 x = np.concatenate((np.ones((x.shape[0], 1)), x), axis = 1)
@@ -69,22 +71,24 @@ x = np.concatenate((np.ones((x.shape[0], 1)), x), axis = 1)
 
 # Train model
 model = Sequential()
-'''
-model.add(Dense(12, input_dim = len(x[0]), kernel_initializer='normal', activation = 'relu'))
+early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=2)
+model.add(Dense(12, input_dim = len(x[0]), kernel_initializer='normal',  \
+    kernel_regularizer = regularizers.l2(0.05), \
+    activation = 'relu'))
 model.add(Dense(8, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
-'''
 
-model.add(Dropout(0.15, input_shape = (len(x[0]), )))
+'''
+model.add(Dropout(0.1, input_shape = (len(x[0]), )))
 # model.add(Dense(18, input_dim = len(x[0]), activation = 'relu'))
 model.add(Dense(18, activation = 'relu'))
 model.add(Dense(9, activation = 'relu'))
 model.add(Dense(1, activation = 'linear'))
-
+'''
 model.summary()
 model.compile(loss = 'mse', optimizer = 'adam')
 
-model.fit(x, y, batch_size = 100, epochs = 800)
+model.fit(x, y, batch_size = 50, epochs = 500)
 model.save('model.h5')
 del model
 
