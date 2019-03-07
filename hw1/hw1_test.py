@@ -25,17 +25,34 @@ n_row = 0
 text = open(testing_data, 'r', encoding='big5')
 rows = csv.reader(text, delimiter=',')
 for r in rows:
-    if n_row % p == 0:
+    '''
+    if n_row % p == 9:
+        # only PM2.5
         test_x.append([])
+
         for i in range(2, 11):
             if float(r[i]) < 0:
                 r[i] = '0'
             test_x[n_row // p].append(ABS(float(r[i])))
+        n_row += 1
+        continue
+    else:
+        n_row += 1
+        continue
+    '''
+
+    if n_row % p == 0:
+        test_x.append([])
+
+        for i in range(2, 11):
+            '''if float(r[i]) < 0:
+                r[i] = '0'''
+            test_x[n_row // p].append(ABS(float(r[i])))
     else :
         for i in range(2, 11):
             if r[i] != 'NR':
-                if float(r[i]) < 0:
-                    r[i] = '0'
+                '''if float(r[i]) < 0:
+                    r[i] = '0'''
                 test_x[n_row // p].append(ABS(float(r[i])))
             else:
                 test_x[n_row // p].append(float(0))
@@ -46,6 +63,8 @@ test_x = np.array(test_x)
 
 eps = 1e-6
 for d in range(len(test_x)):
+    # PM2.5 only
+    #break
     for i in range(p):
         if i == 10 or i == 9:
             # rain fall and PM2.5
