@@ -10,7 +10,7 @@ Linear Regression (PM2.5)
 [hw1 kaggle](https://www.kaggle.com/c/ml2019spring-hw1)
 
 ## HW2
-Binary Classification (ADULT)  
+Binary Classification ([ADULT](https://archive.ics.uci.edu/ml/datasets/Adult))  
 Implemented by **logistic regression** and **generative model**  
 [hw2 website](https://ntumlta2019.github.io/ml-web-hw2/)  
 [hw2 kaggle](https://www.kaggle.com/c/ml2019spring-hw2)
