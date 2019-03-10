@@ -9,9 +9,15 @@ from keras.layers import Dropout
 from keras.callbacks import EarlyStopping
 from keras.callbacks import ModelCheckpoint
 from keras.optimizers import Adamax
+from keras.initializers import RandomNormal
 from keras import regularizers
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+from numpy.random import seed
+seed(1)
+from tensorflow import set_random_seed
+set_random_seed(2)
 
 # Some functions
 def ABS(x):
@@ -22,6 +28,7 @@ def ABS(x):
 
 # Normalization
 def normalize(x):
+    '''
     mean = x[...,:2].mean(0)
     std = x[...,:2].std(0)
     x[...,:2] -= mean
@@ -31,6 +38,13 @@ def normalize(x):
     std = x[...,:3:6].std(0)
     x[...,3:6] -= mean
     x[...,3:6] /= std
+    '''
+    mean = x.mean(0)
+    std = x.std(0)
+    x -= mean
+    eps_a = np.zeros(shape = std.shape) + 1e-10
+    # print(eps_a)
+    x /= (std + eps_a)
     return x
 
 
@@ -67,30 +81,32 @@ text.close()
 # Parsing data to (x, y)
 x = np.array(data_x)
 x = normalize(x)
-
-y = np.array(data_y)
-
 # add square term
 x = np.concatenate((x,x**2), axis = 1)
 
+y = np.array(data_y)
+
 # Train model
 model = Sequential()
-# early_stopping = EarlyStopping(monitor='loss', patience=50, verbose=2)
 
-model.add(Dense(100, input_dim = len(x[0]), kernel_initializer='normal',  \
-    kernel_regularizer = regularizers.l2(0.05), \
+model.add(Dense(15, input_dim = len(x[0]), kernel_initializer=RandomNormal(seed = 0),  \
+    kernel_regularizer = regularizers.l2(0.015), \
     activation = 'relu'))
-model.add(Dropout(0.10))
-model.add(Dense(30, kernel_regularizer = regularizers.l2(0.005), activation = 'relu'))
 
-model.add(Dense(1, activation = 'sigmoid'))
+for i in range(2):
+    model.add(Dropout(0.20))
+    model.add(Dense(88, kernel_initializer=RandomNormal(seed = 0), kernel_regularizer = regularizers.l2(0.01), activation = 'relu'))
+
+model.add(Dense(1, kernel_initializer=RandomNormal(seed = 0), activation = 'sigmoid'))
+
 
 model.summary()
 model.compile(loss = 'binary_crossentropy', \
-    optimizer = Adamax(lr = 0.001, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-6, decay = 0.0001), \
+    optimizer = Adamax(lr = 0.0035, beta_1 = 0.9, beta_2 = 0.999, epsilon = 1e-6, decay = 0.003), \
     metrics=['accuracy'])
 check_point = ModelCheckpoint('model_best.h5', monitor = 'val_acc', verbose = 1, save_best_only = True, mode = 'max')
+# early_stopping = EarlyStopping(monitor='val_acc', patience=80, verbose=2, mode = 'max')
 
-model.fit(x, y, verbose = 1, batch_size = 50, epochs = 100, callbacks = [check_point], validation_split = 0.15)
+model.fit(x, y, verbose = 2, batch_size = 500, epochs = 500, callbacks = [check_point], validation_split = 0.15)
 model.save('model.h5')
 del model
