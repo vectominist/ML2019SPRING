@@ -4,12 +4,12 @@ from numpy import linalg as la
 import math
 import csv
 
-import matplotlib.pylab as plt
+#import matplotlib.pylab as plt
 #%matplotlib inline
 
 from sklearn.ensemble import GradientBoostingClassifier
 #from sklearn import cross_validation, metrics
-from sklearn.model_selection import GridSearchCV
+#from sklearn.model_selection import GridSearchCV
 
 def marginal_enhance(x):
     return x
@@ -110,7 +110,7 @@ data_y = []
 print('Start training...')
 gbm0 = GradientBoostingClassifier(n_estimators = 160, learning_rate = 0.110, \
     min_samples_split = 200, min_samples_leaf = 50, max_depth = 8, \
-        max_features='sqrt', subsample = 0.8, \
+    max_features='sqrt', subsample = 0.8, \
     random_state = 10, verbose = 1)
 gbm0.fit(x, y)
 

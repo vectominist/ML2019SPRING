@@ -101,6 +101,8 @@ cov_1 /= len(x_1)
 
 # share the same covariance matrix
 Cov = cov_0 * P_0 + cov_1 * P_1
+''' print(Cov)
+input()'''
 
 # Get testing file
 testing_data_x = sys.argv[3]

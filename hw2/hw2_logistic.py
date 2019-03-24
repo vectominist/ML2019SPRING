@@ -11,6 +11,19 @@ def ABS(x):
     else:
         return -x
 
+# Normalization
+def normalize(x):
+    mean = x[...,:2].mean(0)
+    std = x[...,:2].std(0)
+    x[...,:2] -= mean
+    x[...,:2] /= std
+
+    mean = x[...,3:6].mean(0)
+    std = x[...,:3:6].std(0)
+    x[...,3:6] -= mean
+    x[...,3:6] /= std
+    return x
+
 
 # Get training file
 training_data_x = sys.argv[1]
@@ -20,6 +33,7 @@ data_x = []
 data_y = []
 
 # Read in training data x
+print('Reading training data...')
 text = open(training_data_x, 'r', encoding='utf8')
 rows = csv.reader(text, delimiter=',')
 n_row = 0
@@ -44,23 +58,9 @@ text.close()
 
 # Parsing data to (x, y)
 x = np.array(data_x)
-# print(x)
-mean = x[...,:2].mean(0)
-std = x[...,:2].std(0)
-x[...,:2] -= mean
-x[...,:2] /= std
+x = normalize(x)
 
-mean = x[...,3:6].mean(0)
-std = x[...,:3:6].std(0)
-x[...,3:6] -= mean
-x[...,3:6] /= std
-
-#print(x)
-#input()
 y = np.array(data_y)
-# '''print(y)
-# input()
-# '''
 
 # add square term
 #x = np.concatenate((x,x**2), axis = 1)
@@ -71,15 +71,15 @@ x = np.concatenate((np.ones((x.shape[0], 1)), x), axis = 1)
 # Weight and some parameters
 #w = np.random.randn(len(x[0]))
 w = np.array([0.001] * len(x[0]))
-lr = 0.5
+lr = 0.015
 lr_ada = 100
-lr_d = 1500
-repeat = 10000
+lr_d = 3000
+repeat = 6000
 beta_1 = 0.9
 beta_2 = 0.99
 beta_1t = 0.99
 beta_2t = 0.99
-lmd = 0
+lmd = 1
 
 # Start Training
 x_T = x.transpose()
@@ -90,17 +90,16 @@ eps_a = [1e-8] * len(x[0])
 eps = np.array(eps_a)
 check_epochs = 1000
 
-print(x.shape)
-print(w.shape)
-print(y.shape)
+# print(x.shape)
+# print(w.shape)
+# print(y.shape)
+
+print('Start training model...')
 
 for i in range(repeat):
     z = np.dot(x, w)
     hypo = (1 + np.exp(-z)) ** (-1)
-    '''print(f"z\n{z}")
-    input()
-    print("hypo{hypo}\nmax{max},min{min}".format(hypo=hypo,max=hypo.max(),min=hypo.min()))
-    input()'''
+    
     loss = hypo - y
     #cost = np.sum(loss ** 2) / len(x)
     #cost_a = math.sqrt(cost)
@@ -128,23 +127,13 @@ for i in range(repeat):
     w = w - lr * np.exp(-i / lr_d) * mt / (np.sqrt(vt) + eps)
 
     # w = w - lr_ada * np.exp(-i / 1000) * gra / ada
-
-
     acc_train = 1 - np.sum(np.absolute(np.round(hypo) - y)) / len(y)
 
-    start_test = (repeat << 5) % 32123
-    z = np.dot(x[start_test:start_test + check_epochs], w)
-    hypo = (1 + np.exp(-z)) ** (-1)
-    # acc_test = 1 - np.sum(np.absolute(np.round(hypo) - y[start_test:start_test + check_epochs])) / check_epochs
-    if i % 50 == 0:
+    if i % 500 == 0:
         print('iteration: %d | Loss: %.6lf | Accuracy: %.6lf | LR: %.6lf' % \
             (i, loss_tot, acc_train, lr * math.exp(-i / lr_d)), end='\r')
     #input()
-    '''
-    if cost_a < 5.381:
-        print('ended at iteration: %d | Cost: %.6lf' % (i, cost_a))
-        break
-    '''
+    
 print()
 
 # Final cost
