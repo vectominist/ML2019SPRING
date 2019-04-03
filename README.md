@@ -16,16 +16,17 @@ Implemented by **logistic regression** and **generative model**
 [hw2 kaggle](https://www.kaggle.com/c/ml2019spring-hw2)
 
 ## HW3
-CNN (Image Sentiment Classification)
+CNN (Image Sentiment Classification)  
 [hw3 website](https://ntumlta2019.github.io/ml-web-hw3/)  
 [hw3 kaggle](https://www.kaggle.com/c/ml2019spring-hw3)
 
 ## HW4
-Explainable AI
+Explainable AI  
 [hw4 website](https://ntumlta2019.github.io/ml-web-hw4/)
 
 ## HW5
-Attack
+Attack  
+[JudgeBoi](http://140.112.42.213:22224/)
 
 ## HW6
 RNN
