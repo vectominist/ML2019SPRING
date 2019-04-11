@@ -127,7 +127,7 @@ def layerCal2(mdl, layer_num, x):
 
 # Load model
 model = Classifier()
-model.load_state_dict(torch.load('model_Ada1_678.pth'))
+model.load_state_dict(torch.load('model_Ada1_678.pth?dl=1'))
 model.cuda()
 model.eval()
 
