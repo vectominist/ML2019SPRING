@@ -101,17 +101,17 @@ class Classifier(nn.Module):
 
 # Load model
 model1 = Classifier()
-model1.load_state_dict(torch.load('model_Ada1_678.pth?dl=1'))
+model1.load_state_dict(torch.load('model_Ada1_678.pth'))
 model1.cuda()
 model1.eval()
 
 model2 = Classifier()
-model2.load_state_dict(torch.load('model_Adam1_671.pth?dl=1'))
+model2.load_state_dict(torch.load('model_Adam1_671.pth'))
 model2.cuda()
 model2.eval()
 
 model3 = Classifier()
-model3.load_state_dict(torch.load('model_SGD1_668.pth?dl=1'))
+model3.load_state_dict(torch.load('model_SGD1_668.pth'))
 model3.cuda()
 model3.eval()
 
