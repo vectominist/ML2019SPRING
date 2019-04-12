@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wget https://www.dropbox.com/s/8vgnlim5m1vh74c/model_Ada1_678.pth?dl=1
+wget https://github.com/vectominist/ZJ_Solution_Python/releases/download/0.0.0/model_Ada1_678.pth
 
 python saliency_map.py $1 $2
 python feature_map.py $1 $2

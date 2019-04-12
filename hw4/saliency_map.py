@@ -113,7 +113,7 @@ class Classifier(nn.Module):
 
 # Load model
 model = Classifier()
-model.load_state_dict(torch.load('model_Ada1_678.pth?dl=1'))
+model.load_state_dict(torch.load('model_Ada1_678.pth'))
 model.cuda()
 
 # Compute Saliency
