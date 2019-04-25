@@ -26,10 +26,13 @@ Explainable AI
 
 ## HW5
 Attack  
-[JudgeBoi](http://140.112.42.213:22224/)
+[JudgeBoi](http://140.112.42.213:22224/)  
+[hw5 ppt](https://docs.google.com/presentation/d/1RdBdCspgjXMnH3qzTS_m4RoQ0sT67VXoT-Oj7MERopA/edit?fbclid=IwAR2SChfpdxkJGBJJxqjp3TEfH_gO0JEm7gwgiiKxuycRPMjY05JcSYyYGvE#slide=id.p)
 
 ## HW6
-RNN
+RNN  
+[hw6 website](https://ntumlta2019.github.io/ml-web-hw6/)  
+[hw6 kaggle](https://www.kaggle.com/c/ml2019spring-hw6/)
 
 ## HW7
 Unsupervised Learning
