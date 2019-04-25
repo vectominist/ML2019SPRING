@@ -1,4 +1,4 @@
 #!/bin/bash
 
-python hw5_fgsm.py $1 $1
+python hw5_train_fgsm.py $1 $1
 
