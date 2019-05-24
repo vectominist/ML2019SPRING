@@ -41,6 +41,8 @@ Unsupervised Learning
 
 ## HW8
 Network Compression
+[hw8 website](https://ntumlta2019.github.io/ml-web-hw8/)  
+[hw8 kaggle](https://www.kaggle.com/c/ml2019spring-hw8/)
 
 
 
