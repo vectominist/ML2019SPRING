@@ -436,17 +436,17 @@ def visualization(args):
     vis_y = emb_val[:, 1]
 
     # My prediction
-    plt.scatter(vis_x, vis_y, c=category, cmap=plt.cm.get_cmap("jet", 2), marker='.')
+    # plt.scatter(vis_x, vis_y, c=category, cmap=plt.cm.get_cmap("jet", 2), marker='.')
     # plt.colorbar(ticks=range(2))
     # plt.clim(0, 1)
-    plt.show()
+    # plt.show()
     # Correct answer
     correct_c = np.zeros(5000, dtype=int)
     correct_c[2500:] = 1
-    plt.scatter(vis_x, vis_y, c=correct_c, cmap=plt.cm.get_cmap("jet", 2), marker='.')
+    # plt.scatter(vis_x, vis_y, c=correct_c, cmap=plt.cm.get_cmap("jet", 2), marker='.')
     # plt.colorbar(ticks=range(2))
     # plt.clim(0, 1)
-    plt.show()
+    # plt.show()
 
     print('acc 1 %.6f' % (np.sum(category == correct_c) / 5000))
     print('acc 2 %.6f' % (np.sum(category != correct_c) / 5000))
