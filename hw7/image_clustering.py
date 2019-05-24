@@ -317,7 +317,7 @@ def train_Kmeans_PCA_test(args):
     test_loader = DataLoader(TensorDataset(images_x), batch_size=1000, shuffle=False, num_workers=0)
 
     model = Autoencoder()
-    model.load_state_dict(torch.load('models/autoenc_model_1024_021049.pth'))
+    model.load_state_dict(torch.load('autoenc_model_1024_021049.pth'))
     # Loss : 0.~ (model number)
     model.cuda()
     l_vec = get_latent_vector(model, test_loader)
@@ -332,12 +332,12 @@ def train_Kmeans_PCA_test(args):
     sing_val = skl_pca.singular_values_
     sing_val /= np.sum(sing_val)
 
-    text = open('result/singular_val.csv', 'w+')
-    s = csv.writer(text,delimiter=',',lineterminator='\n')
-    s.writerow(['sing_val'])
-    for i in range(len(sing_val)):
-        s.writerow([str(sing_val[i])])
-    text.close()
+    # text = open('result/singular_val.csv', 'w+')
+    # s = csv.writer(text,delimiter=',',lineterminator='\n')
+    # s.writerow(['sing_val'])
+    # for i in range(len(sing_val)):
+    #     s.writerow([str(sing_val[i])])
+    # text.close()
 
     # Test
     # pca_data = TSNE(n_components=2, random_state=87).fit_transform(pca_data)
