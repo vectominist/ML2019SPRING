@@ -8,6 +8,8 @@ import torch.nn as nn
 from torch.utils.data import TensorDataset, DataLoader
 import torch.nn.functional as F
 
+from hw8_compress import compress_model
+
 # Data augmentation
 # Rotate image by theta
 def rotationAugmentation(x, theta):
@@ -272,3 +274,4 @@ for epoch in range(num_epoch):
     scheduler.step(val_acc)
 
 # Run : python hw8_train.py 
+compress_model('model.pth')

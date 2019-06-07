@@ -27,4 +27,4 @@ def decompress_model(mdl_path):
     return x
 
 # models/model_large3_684.pth
-compress_model('model.pth')
+# compress_model('model.pth')
